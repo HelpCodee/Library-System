@@ -13,10 +13,10 @@ class Book extends Model {
 	}
 
 	static associate(models) {
-		this.hasOne(models.Book, {
+		this.belongsTo(models.Book, {
 			foreignKey: 'book_id', as: 'book'
 		})
-		this.hasOne(models.User, {
+		this.belongsTo(models.User, {
 			foreignKey: 'user_id', as: 'user'
 		})
 	}

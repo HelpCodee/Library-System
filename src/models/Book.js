@@ -14,10 +14,10 @@ class Book extends Model {
 	}
 
 	static associate(models) {
-		this.hasMany(models.Author, {
+		this.belongsTo(models.Author, {
 			foreignKey: 'author_id', as: 'authors'
 		})
-		this.hasOne(models.Publisher, {
+		this.belongsTo(models.Publisher, {
 			foreignKey: 'publisher_id', as: 'publisher'
 		})
 		this.belongsToMany(models.Category, {

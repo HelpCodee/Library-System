@@ -1,14 +1,16 @@
 const Sequelize = require('sequelize')
 const dbConfig = require('../config/database')
 
-const User = require('../models/User')
-const Address = require('../models/Address')
-const Author = require('../models/Author')
-const Provider = require('../models/Provider')
-const Publisher = require('../models/Publisher')
-const Category = require('../models/Category')
-const Book = require('../models/Book')
-const Loan = require('../models/Loan')
+const {
+	User,
+	Address,
+	Author,
+	Provider,
+	Publisher,
+	Category,
+	Book,
+	Loan
+} = require('../models')
 
 const connection = new Sequelize(dbConfig)
 
