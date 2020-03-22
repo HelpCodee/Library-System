@@ -23,7 +23,39 @@ module.exports = {
 	},
 
 	async show(req, res) {
+		try {
+			const { id } = req.params
 
+			let book = await Book.findByPk(id, {
+				include: {
+					association: 'categories',
+					attributes: ['name'],
+					through: {
+						attributes: []
+					}
+				}
+			})
+			if (!book) {
+				return res.json({ error: 'Livro não encontrado.' })
+			}
+
+			book = {
+				id: book.id,
+				title: book.title,
+				volume: book.volume,
+				edition: book.edition,
+				synopsis: book.synopsis,
+				author_id: book.author_id,
+				categories: book.categories
+			}
+
+			return res.json(book)
+		} catch(error) {
+			return res.json({
+				error: error.parent.detail,
+				code: error.parent.code
+			})
+		}
 	},
 	
 	async store(req, res) {
@@ -86,7 +118,7 @@ module.exports = {
 	},
 	
 	async edit(req, res) {
-
+		
 	},
 	
 	async destroy(req, res) {

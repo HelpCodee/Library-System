@@ -2,7 +2,7 @@ const express = require('express')
 const routes = express.Router()
 
 const {
-	User, Author, Address, Provider, Category, Book
+	User, Author, Address, Provider, Category, Book, Loan
 } = require('./controllers')
 
 routes.get('/users', User.index)
@@ -21,6 +21,10 @@ routes.get('/categories', Category.index)
 routes.post('/category', Category.store)
 
 routes.get('/books', Book.index)
+routes.get('/book/:id', Book.show)
 routes.post('/book', Book.store)
+
+routes.get('/loans', Loan.index)
+routes.post('/loan/:user_id/:book_id', Loan.store)
 
 module.exports = routes
