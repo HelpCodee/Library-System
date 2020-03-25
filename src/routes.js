@@ -18,7 +18,10 @@ routes.get('/providers', Provider.index)
 routes.post('/provider', Provider.store)
 
 routes.get('/categories', Category.index)
+routes.get('/category/:id', Category.show)
 routes.post('/category', Category.store)
+routes.put('/category/:id', Category.edit)
+routes.delete('/category/:id', Category.destroy)
 
 routes.get('/books', Book.index)
 routes.get('/book/:id', Book.show)
