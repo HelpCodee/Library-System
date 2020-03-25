@@ -8,14 +8,26 @@ module.exports = {
 			return res.json({ categories })
 		} catch(error) {
 			return res.json({
-				error: error.parent.detail,
-				code: error.parent.code
+				error: error.message
 			})
 		}
 	},
 
 	async show(req, res) {
+		try {
+			const { id } = req.params
 
+			const category = await Category.findByPk(id)
+			if (!category) {
+				return res.json({ error: 'Categoria não encontrada' })
+			}
+
+			return res.json(category)
+		} catch(error) {
+			return res.json({
+				error: error.message
+			})
+		}
 	},
 	
 	async store(req, res) {
@@ -33,17 +45,39 @@ module.exports = {
 			}
 		} catch(error) {
 			return res.json({
-				error: error.parent.detail,
-				code: error.parent.code
+				error: error.message
 			})
 		}
 	},
 	
 	async edit(req, res) {
+		try {
+			const { id } = req.params
+			const { name } = req.body
 
+			let category = await Category.findByPk(id)
+			category = await category.update({ name })
+
+			return res.json(category)
+
+		} catch(error) {
+			return res.json({
+				error: error.message
+			})
+		}
 	},
 	
 	async destroy(req, res) {
+		try {
+			const { id } = req.params
 
+			await Category.destroy({ where: { id } })
+
+			return res.json({ message: 'Categoria apagada.' })
+		} catch(error) {
+			return res.json({
+				error: error.message
+			})
+		}
 	},
 }
