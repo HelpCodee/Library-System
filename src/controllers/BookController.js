@@ -4,20 +4,22 @@ module.exports = {
 	async index(req, res) {
 		try {
 			const books = await Book.findAll({
-				include: {
+				include: [{
 					association: 'categories',
-					attributes: ['name'],
+					attributes: ['name', 'id'],
 					through: {
 						attributes: []
 					}
-				}
+				},{
+					association: 'authors',
+					attributes: ['name', 'surname']
+				}]
 			})
 
 			return res.json({ books })
 		} catch(error) {
 			return res.json({
-				error: error.parent.detail,
-				code: error.parent.code
+				error: error.message
 			})
 		}
 	},
@@ -29,7 +31,7 @@ module.exports = {
 			let book = await Book.findByPk(id, {
 				include: {
 					association: 'categories',
-					attributes: ['name'],
+					attributes: ['name', 'id'],
 					through: {
 						attributes: []
 					}
@@ -52,8 +54,7 @@ module.exports = {
 			return res.json(book)
 		} catch(error) {
 			return res.json({
-				error: error.parent.detail,
-				code: error.parent.code
+				error: error.message
 			})
 		}
 	},
@@ -70,49 +71,41 @@ module.exports = {
 				synopsis
 			} = req.body
 			
-			const [ book, created_now ] = await Book.findOrCreate({
-				where: {
-					title,
-					author_id,
-					publisher_id,
-					volume,
-					edition,
-					year
-				},
-				defaults: { synopsis }
+			const book = await Book.create({
+				title,
+				author_id,
+				publisher_id,
+				volume,
+				edition,
+				year,
+				synopsis
 			})
 
-			if (created_now) {
-				// Recebe as categorias como string separadas por vírgula
-				let { categories } = req.body 
+			// Recebe as categorias como string separadas por vírgula
+			let { categories } = req.body 
 
-				// Cria um array cortando as vírgulas
-				categories = categories.split(',')
+			// Cria um array cortando as vírgulas
+			// categories = categories.split(',')
 
-				// Tira os espaços com trim() e guarda em cat.
-				let cat = []
-				for (let c of categories) {
-					cat.push(c.trim())
-				}
+			// Tira os espaços com trim() e guarda em cat.
+			// let cat = []
+			// for (let c of categories) {
+			// 	cat.push(c.trim())
+			// }
 
-				// Loop pra adicionar todas as categorias ao livro.
-				for (let categoria of cat) {
-					const [ category ] = await Category.findOrCreate({
-						where: { name: categoria }
-					})
-					await book.addCategory(category)
+			// Loop pra adicionar todas as categorias ao livro.
+			// for (let categoria of cat) {
+			// 	const [ category ] = await Category.findOrCreate({
+			// 		where: { name: categoria }
+			// 	})
+			// 	await book.setCategory(category)
+			// }
+			await book.setCategories(categories)
 
-					// catsResult.push(category)
-				}
-
-				return res.json(book)				
-			} else {
-				return res.json({ error: 'Esse livro já está cadastrado!' })
-			}
+			return res.json(book)
 		} catch(error) {
 			return res.json({
-				error: error.parent.detail,
-				code: error.parent.code
+				error: error.message
 			})
 		}
 	},
