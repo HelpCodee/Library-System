@@ -8,5 +8,5 @@ const Book = require('./BookController')
 const Loan = require('./LoanController')
 
 module.exports = {
-	User, Address, Author, Provider, Publisher, Category, Book, Loan
+  User, Address, Author, Provider, Publisher, Category, Book, Loan
 }

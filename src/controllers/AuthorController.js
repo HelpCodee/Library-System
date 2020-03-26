@@ -1,46 +1,77 @@
 const Author = require('../models/Author')
 
 module.exports = {
-	async index(req, res) {
-		try {
-			const authors = await Author.findAll()
+  async index(req, res) {
+    try {
+      const authors = await Author.findAll()
 
-			return res.json(authors)
-		} catch (error) {
-			return res.json({ 
-				error: error.parent.detail,
-				code: error.parent.code
-			})
-		}
-	},
+      return res.json(authors)
+    } catch (error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  },
+  // Desnecessário
+  // async show(req, res) {
 
-	async show(req, res) {
-		// Desnecessário
-	},
+  // },
 
-	async store(req, res) {
-		try {
-			const { name, surname } = req.body
+  async store(req, res) {
+    try {
+      const { name, surname } = req.body
 
-			const author = await Author.create({
-				name, surname
-			})
+      const [ author, created_now ] = await Author.findOrCreate({
+        where: { name, surname }
+      })
 
-			return res.json(author)
-		} catch (error) {
-			return res.json({ 
-				error: error.parent.detail,
-				code: error.parent.code
-			})
-		}
-			
-	},
+      if (!created_now) {
+        return res.json({ error: 'Esse autor já está cadastrado.' })
+      }
 
-	async edit(req, res) {
+      return res.json(author)
+    } catch (error) {
+      return res.json({
+        error: error.message
+      })
+    }
+      
+  },
 
-	},
+  async edit(req, res) {
+    try {
+      const { id } = req.params
+      const { name, surname } = req.body
 
-	async destroy(req, res) {
+      let author = await Author.findByPk(id)
+      if (!author) {
+        return res.json({ error: 'Autor não encontrado.' })
+      }
 
-	}
+      author = await author.update({ name, surname })
+
+      return res.json(author)
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  },
+
+  async destroy(req, res) {
+    try {
+      const { id } = req.params
+
+      let destroyed = await Author.destroy({ where: { id } })
+      if (!destroyed) {
+        return res.json({ error: 'Autor não encontrado.' })
+      }
+
+      return res.json({ message: 'Autor apagado.' })
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  }
 }

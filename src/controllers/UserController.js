@@ -1,54 +1,98 @@
 const User = require('../models/User')
 
 module.exports = {
-	async index(req, res) {
-		try {
-			const users = await User.findAll()
+  async index(req, res) {
+    try {
+      const users = await User.findAll()
 
-			return res.json(users)
-		} catch (error) {
-			return res.json({ 
-				error: error.parent.detail,
-				code: error.parent.code
-			})
-		}
-	},
+      return res.json(users)
+    } catch (error) {
+      return res.json({ 
+        error: error.message
+      })
+    }
+  },
 
-	async show(req, res) {
+  async show(req, res) {
+    try {
+      const { id } = req.params
 
-	},
+      const user = await User.findByPk(id)
+      if (!user) {
+        return res.json({ error: 'Usuário não encontrado.' })
+      }
 
-	async store(req, res) {
-		try {
-			const {
-				name, surname, email, password, telephone, cpf
-			} = req.body
+      return res.json(user)
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  },
 
-			let user = await User.findOne({
-				where: { email }
-			})
-			if (user) {
-				return res.json({ error: 'Email já cadastrado.' })
-			}
+  async store(req, res) {
+    try {
+      const {
+        name, surname, email, password, telephone, cpf
+      } = req.body
 
-			user = await User.create({
-				name, surname, email, password, telephone, cpf
-			})
+      let user = await User.findOne({
+        where: { email }
+      })
+      if (user) {
+        return res.json({ error: 'Email já cadastrado.' })
+      }
 
-			return res.json(user)
-		} catch (error) {
-			return res.json({ 
-				error: error.parent.detail,
-				code: error.parent.code
-			})
-		}
-	},
+      user = await User.create({
+        name, surname, email, password, telephone, cpf
+      })
 
-	async edit(req, res) {
+      return res.json(user)
+    } catch (error) {
+      return res.json({ 
+        error: error.message
+      })
+    }
+  },
 
-	},
+  async edit(req, res) {
+    try {
+      const { id } = req.params
+      const {
+        name, surname, email, password, telephone, cpf, is_admin = false
+      } = req.body
 
-	async destroy(req, res) {
+      let user = await User.findByPk(id)
+      if (!user) {
+        return res.json({ error: 'Usuário não encontrado.' })
+      }
 
-	}
+      user = await user.update({
+        name, surname, email, password, telephone, cpf, is_admin
+      })
+
+      return res.json(user)
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  },
+
+  async destroy(req, res) {
+    try {
+      const { id } = req.params
+
+      const destroyed = await User.destroy({ where: { id } })
+      if (!destroyed) {
+        return res.json({ error: 'Usuário não encontrado.' })
+      }
+
+      return res.json({ message: 'Usuário apagado.' })
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  }
 }

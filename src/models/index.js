@@ -8,12 +8,12 @@ const Publisher = require('./Publisher')
 const User = require('./User')
 
 module.exports = {
-	Address,
-	Author,
-	Book,
-	Category,
-	Loan,
-	Provider,
-	Publisher,
-	User
+  Address,
+  Author,
+  Book,
+  Category,
+  Loan,
+  Provider,
+  Publisher,
+  User
 }

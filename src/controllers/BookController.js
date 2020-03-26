@@ -1,120 +1,124 @@
 const { Book, Category } = require('../models')
 
 module.exports = {
-	async index(req, res) {
-		try {
-			const books = await Book.findAll({
-				include: [{
-					association: 'categories',
-					attributes: ['name', 'id'],
-					through: {
-						attributes: []
-					}
-				},{
-					association: 'authors',
-					attributes: ['name', 'surname']
-				}]
-			})
+  async index(req, res) {
+    try {
+      const books = await Book.findAll({
+        include: [{
+          association: 'categories',
+          attributes: ['name', 'id'],
+          through: {
+            attributes: []
+          }
+        }, {
+          association: 'authors',
+          attributes: ['name', 'surname']
+        }, {
+          association: 'publishers',
+          attributes: ['name']
+        }]
+      })
 
-			return res.json({ books })
-		} catch(error) {
-			return res.json({
-				error: error.message
-			})
-		}
-	},
+      return res.json(books)
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  },
 
-	async show(req, res) {
-		try {
-			const { id } = req.params
+  async show(req, res) {
+    try {
+      const { id } = req.params
 
-			let book = await Book.findByPk(id, {
-				include: {
-					association: 'categories',
-					attributes: ['name', 'id'],
-					through: {
-						attributes: []
-					}
-				}
-			})
-			if (!book) {
-				return res.json({ error: 'Livro não encontrado.' })
-			}
+      let book = await Book.findByPk(id, {
+        include: [{
+          association: 'categories',
+          attributes: ['name', 'id'],
+          through: {
+            attributes: []
+          }
+        }, {
+          association: 'authors',
+          attributes: ['name', 'surname']
+        }, {
+          association: 'publishers',
+          attributes: ['name']
+        }]
+      })
+      if (!book) {
+        return res.json({ error: 'Livro não encontrado.' })
+      }
+      const { createdAt, updatedAt, author_id, publisher_id, ...data } = book.dataValues
 
-			book = {
-				id: book.id,
-				title: book.title,
-				volume: book.volume,
-				edition: book.edition,
-				synopsis: book.synopsis,
-				author_id: book.author_id,
-				categories: book.categories
-			}
+      return res.json(data)
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  },
+  
+  async store(req, res) {
+    try {
+      const { categories, ...data } = req.body
+      
+      // title, author_id, publisher_id, volume, edition, year, synopsis
+      const book = await Book.create(data)
+      if (!book) {
+        return res.json({ error: 'Livro não criado.' })
+      }
 
-			return res.json(book)
-		} catch(error) {
-			return res.json({
-				error: error.message
-			})
-		}
-	},
-	
-	async store(req, res) {
-		try {
-			const {
-				title,
-				author_id,
-				publisher_id,
-				volume,
-				edition,
-				year,
-				synopsis
-			} = req.body
-			
-			const book = await Book.create({
-				title,
-				author_id,
-				publisher_id,
-				volume,
-				edition,
-				year,
-				synopsis
-			})
+      // Seta as categorias ao relacionamento com o livro.
+      await book.setCategories(categories)
 
-			// Recebe as categorias como string separadas por vírgula
-			let { categories } = req.body 
+      return res.json(book)
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  },
+  
+  async edit(req, res) {
+    try {
+      const { id } = req.params
+      const { categories, ...data } = req.body
 
-			// Cria um array cortando as vírgulas
-			// categories = categories.split(',')
+      let book = await Book.findByPk(id)
+      if (!book) {
+        return res.json({ error: 'Livro não encontrado.' })
+      }
 
-			// Tira os espaços com trim() e guarda em cat.
-			// let cat = []
-			// for (let c of categories) {
-			// 	cat.push(c.trim())
-			// }
+      let bookCreated = await book.update(data)
+      if (!bookCreated) {
+        return res.json({ error: 'Livro não atualizado.' })
+      }
 
-			// Loop pra adicionar todas as categorias ao livro.
-			// for (let categoria of cat) {
-			// 	const [ category ] = await Category.findOrCreate({
-			// 		where: { name: categoria }
-			// 	})
-			// 	await book.setCategory(category)
-			// }
-			await book.setCategories(categories)
+      await bookCreated.setCategories(categories)
 
-			return res.json(book)
-		} catch(error) {
-			return res.json({
-				error: error.message
-			})
-		}
-	},
-	
-	async edit(req, res) {
-		
-	},
-	
-	async destroy(req, res) {
+      return res.json(bookCreated)
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  },
+  
+  async destroy(req, res) {
+    try {
+      const { id } = req.params
 
-	},
+      const destroyed = await Book.destroy({ where: { id } })
+      if (!destroyed) {
+        return res.json({ error: 'Esse livro não existe.' })
+      }
+
+      return res.json({ message: 'Livro apagado.' })
+    } catch(error) {
+      return res.json({
+        error: error.message
+      })
+    }
+  },
 }

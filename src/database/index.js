@@ -2,14 +2,14 @@ const Sequelize = require('sequelize')
 const dbConfig = require('../config/database')
 
 const {
-	User,
-	Address,
-	Author,
-	Provider,
-	Publisher,
-	Category,
-	Book,
-	Loan
+  User,
+  Address,
+  Author,
+  Provider,
+  Publisher,
+  Category,
+  Book,
+  Loan
 } = require('../models')
 
 const connection = new Sequelize(dbConfig)
