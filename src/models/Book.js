@@ -15,7 +15,7 @@ class Book extends Model {
 
   static associate(models) {
     this.belongsTo(models.Author, {
-      foreignKey: 'author_id', as: 'authors'
+      foreignKey: 'author_id', as: 'author'
     })
     this.belongsTo(models.Publisher, {
       foreignKey: 'publisher_id', as: 'publisher'

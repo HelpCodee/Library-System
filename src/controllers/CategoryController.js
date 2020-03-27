@@ -4,7 +4,7 @@ module.exports = {
   async index(req, res) {
     try {
       const categories = await Category.findAll()
-
+      
       return res.json({ categories })
     } catch(error) {
       return res.json({

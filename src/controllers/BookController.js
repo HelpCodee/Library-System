@@ -1,9 +1,43 @@
 const { Book, Category } = require('../models')
+const { Op } = require('sequelize')
 
 module.exports = {
   async index(req, res) {
     try {
-      const books = await Book.findAll({
+      const { limit, last_id, first_id } = req.query
+
+      
+      const getWhere = () => {
+        if (last_id) {
+          return {
+            id: {
+              [Op.lt]: last_id
+            }
+          }
+        }
+
+        if (first_id) {
+          return {
+            id: {
+              [Op.gt]: first_id
+            }
+          }
+        }
+      }
+
+      const getOrder = () => {
+        return first_id ? [['id', 'ASC']] : [['id', 'DESC']]
+      }
+
+      const result = (books) => {
+        return first_id ? books.reverse() : books
+      }
+
+      console.log(getWhere())
+      let books = await Book.findAll({
+        limit,
+        where: getWhere(),
+        order: getOrder(),
         include: [{
           association: 'categories',
           attributes: ['name', 'id'],
@@ -11,15 +45,20 @@ module.exports = {
             attributes: []
           }
         }, {
-          association: 'authors',
+          association: 'author',
           attributes: ['name', 'surname']
         }, {
-          association: 'publishers',
+          association: 'publisher',
           attributes: ['name']
         }]
       })
 
-      return res.json(books)
+      let booksLength
+      if (!last_id && !first_id) {
+        booksLength = await Book.count()
+        books.unshift({ total: booksLength })
+      }
+      return res.json(result(books))
     } catch(error) {
       return res.json({
         error: error.message
