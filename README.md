@@ -3,64 +3,64 @@
 ## Usuário
 
 GET     `/users`    -> Lista todos os usuários.  
-GET     `/user/:id` -> Mostra as informações de um usuário.  
-POST    `/user`     -> Cria um usuário.  
-PUT     `/user/:id` -> Edita um usuário.  
-DELETE  `/user/:id` -> Apaga um usuário.  
+GET     `/users/:id` -> Mostra as informações de um usuário.  
+POST    `/users`     -> Cria um usuário.  
+PUT     `/users/:id` -> Edita um usuário.  
+DELETE  `/users/:id` -> Apaga um usuário.  
 
 
 ## Autor
 
 GET     `/authors`      -> Lista os autores.  
-POST    `/author`       -> Salva um autor.  
-PUT     `/author/:id`   -> Edita um autor.  
-DELETE  `/author/:id`   -> Apaga um autor.  
+POST    `/authors`       -> Salva um autor.  
+PUT     `/authors/:id`   -> Edita um autor.  
+DELETE  `/authors/:id`   -> Apaga um autor.  
 
 
 ## Endereço
 
 GET     `/addresses`        -> Lista todos os endereços.  
-GET     `/address/:user_id` -> Mostra o endereço de um usuário.  
-POST    `/address/:user_id` -> Salva um endereço para um usuário.  
-PUT     `/address/:user_id` -> Edita o endereço de um usuário.  
+GET     `/addresses/:user_id` -> Mostra o endereço de um usuário.  
+POST    `/addresses/:user_id` -> Salva um endereço para um usuário.  
+PUT     `/addresses/:user_id` -> Edita o endereço de um usuário.  
 
 
 ## Fornecedor
 
 GET     `/providers`    -> Lista os fornecedores.  
-GET     `/provider/:id` -> Mostra as informações de um fornecedor.  
-POST    `/provider`     -> Salva um fornecedor.  
-PUT     `/provider/:id` -> Edita um fornecedor.  
-DELETE  `/provider/:id` -> Apaga um fornecedor.  
+GET     `/providers/:id` -> Mostra as informações de um fornecedor.  
+POST    `/providers`     -> Salva um fornecedor.  
+PUT     `/providers/:id` -> Edita um fornecedor.  
+DELETE  `/providers/:id` -> Apaga um fornecedor.  
 
 
 ## Editora
 
 GET     `/publishers`    -> Lista as editoras.  
-POST    `/publisher`     -> Salva uma editora.  
-PUT     `/publisher/:id` -> Edita uma editora.  
-DELETE  `/publisher/:id` -> Apaga uma editora.
+POST    `/publishers`     -> Salva uma editora.  
+PUT     `/publishers/:id` -> Edita uma editora.  
+DELETE  `/publishers/:id` -> Apaga uma editora.
 
 
 ## Categoria
 
 GET     `/categories`   -> Lista as categorias.  
-GET     `/category/:id` -> Mostra uma categoria. (provavelmente inútil)  
-POST    `/category`     -> Cria uma categoria.  
-PUT     `/category/:id` -> Edita uma categoria.  
-DELETE  `/category/:id` -> Apaga uma categoria.  
+GET     `/categories/:id` -> Mostra uma categoria. (provavelmente inútil)  
+POST    `/categories`     -> Cria uma categoria.  
+PUT     `/categories/:id` -> Edita uma categoria.  
+DELETE  `/categories/:id` -> Apaga uma categoria.  
 
 
 ## Livro
 
 GET     `/books`    -> Lista os livros + (categorias, autor, editora) de cada livro.  
-GET     `/book/:id` -> Mostra as informações de um livro + (categorias, autor, editora).  
-POST    `/book`     -> Salva um livro.  
-PUT     `/book/:id` -> Edita um livro.  
-DELETE  `/book/:id` -> Apaga um livro.  
+GET     `/books/:id` -> Mostra as informações de um livro + (categorias, autor, editora).  
+POST    `/books`     -> Salva um livro.  
+PUT     `/books/:id` -> Edita um livro.  
+DELETE  `/books/:id` -> Apaga um livro.  
 
 
 ## Empréstimo
 
 GET     `/loans`                    -> Lista todos os empréstimos.  
-POST    `/loan/:user_id/:book_id`   -> Realiza um novo empréstimo.  
+POST    `/loans/:user_id/:book_id`   -> Realiza um novo empréstimo.  
