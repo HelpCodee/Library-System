@@ -133,7 +133,9 @@ module.exports = {
         return res.json({ error: 'Livro não atualizado.' })
       }
 
-      await bookCreated.setCategories(categories)
+      if (categories) {
+        await bookCreated.setCategories(categories)
+      }
 
       return res.json(bookCreated)
     } catch(error) {
