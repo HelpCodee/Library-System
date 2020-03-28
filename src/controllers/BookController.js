@@ -5,7 +5,6 @@ module.exports = {
   async index(req, res) {
     try {
       const { limit, last_id, first_id } = req.query
-
       
       const getWhere = () => {
         if (last_id) {
