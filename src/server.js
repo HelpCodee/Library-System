@@ -2,7 +2,7 @@ const express = require('express')
 const routes = require('./routes')
 
 require('dotenv').config({  
-  path: __dirname + process.env.NODE_ENV === 'production' ? '.env' : '.env.development'
+  path: process.env.NODE_ENV === 'production' ? '.env' : '.env.development'
 })
 
 require('./database')
