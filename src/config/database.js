@@ -1,3 +1,5 @@
+console.log(process.env.DB_HOST)
+
 module.exports = {
   dialect: 'postgres',
   host: process.env.DB_HOST,
