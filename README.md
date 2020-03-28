@@ -1,6 +1,66 @@
-### projectsfree
-Esse repositório é feito para qualquer um enviar e criar projetos Open-sources que contribuam tanto na sua evolução como programador,quando na vida
+# API Library System
 
-#### Nesse repositório Existirão duas Branchs principais que serão as branches "Ideias" e"Project". Na primeira poderam ser esttruturada as ideias tidas pelos membros que contribuem com o repositório, tanto com script programas ou features indicando qual novo projeto pode ser feito; a segunda, será uma branch mais prática onde se pode desenvolver  o inicio de um projecto  e ir fazendo mudanças aos poucos, junto com os membros colaboradores, cada membro terá a plena liberdade de criar issues e tarefas para serem realizado por projetos.
+## Usuário
 
-#### A wiki do projeto será feita ao longo do desenvolvimento  dos mesmos, então estará sempre sendo atualizada, assim como a documentação dos mesmos, para divulgar o trabalho, caso necessite de um ofuscador de código para tirar do open-source, contate o admin no server, para  ele definir o seu projeto como private. Então sintam-se livres para criar e se divertir.
+GET     `/users`    -> Lista todos os usuários.
+GET     `/user/:id` -> Mostra as informações de um usuário.
+POST    `/user`     -> Cria um usuário.
+PUT     `/user/:id` -> Edita um usuário.
+DELETE  `/user/:id` -> Apaga um usuário.
+
+
+## Autor
+
+GET     `/authors`      -> Lista os autores.
+POST    `/author`       -> Salva um autor.
+PUT     `/author/:id`   -> Edita um autor.
+DELETE  `/author/:id`   -> Apaga um autor.
+
+
+## Endereço
+
+GET     `/addresses`        -> Lista todos os endereços.
+GET     `/address/:user_id` -> Mostra o endereço de um usuário.
+POST    `/address/:user_id` -> Salva um endereço para um usuário.
+PUT     `/address/:user_id` -> Edita o endereço de um usuário.
+
+
+## Fornecedor
+
+GET     `/providers`    -> Lista os fornecedores.
+GET     `/provider/:id` -> Mostra as informações de um fornecedor.
+POST    `/provider`     -> Salva um fornecedor.
+PUT     `/provider/:id` -> Edita um fornecedor.
+DELETE  `/provider/:id` -> Apaga um fornecedor.
+
+
+## Editora
+
+GET     `/publishers`    -> Lista as editoras.
+POST    `/publisher`     -> Salva uma editora.
+PUT     `/publisher/:id` -> Edita uma editora.
+DELETE  `/publisher/:id` -> Apaga uma editora.
+
+
+## Categoria
+
+GET     `/categories`   -> Lista as categorias.
+GET     `/category/:id` -> Mostra uma categoria. (provavelmente inútil)
+POST    `/category`     -> Cria uma categoria.
+PUT     `/category/:id` -> Edita uma categoria.
+DELETE  `/category/:id` -> Apaga uma categoria.
+
+
+## Livro
+
+GET     `/books`    -> Lista os livros + (categorias, autor, editora) de cada livro.
+GET     `/book/:id` -> Mostra as informações de um livro + (categorias, autor, editora).
+POST    `/book`     -> Salva um livro.
+PUT     `/book/:id` -> Edita um livro.
+DELETE  `/book/:id` -> Apaga um livro.
+
+
+## Empréstimo
+
+GET     `/loans`                    -> Lista todos os empréstimos.
+POST    `/loan/:user_id/:book_id`   -> Realiza um novo empréstimo.

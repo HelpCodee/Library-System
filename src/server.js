@@ -15,5 +15,5 @@ app.use(routes)
 const PORT = process.env.PORT || 3333
 
 app.listen(PORT, (req, res) => {
-  console.log('Server rodando em http://localhost:' + PORT)
+  console.log('Server rodando na porta', PORT)
 })

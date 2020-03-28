@@ -12,7 +12,7 @@ module.exports = {
       })
     }
   },
-  // Desnecessário
+  // Desnecessário, já que uma editora só terá nome.
   // async show(req, res) {
 
   // },
