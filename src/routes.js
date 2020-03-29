@@ -2,7 +2,7 @@ const express = require('express')
 const routes = express.Router()
 
 const {
-  User, Author, Address, Provider, Publisher, Category, Book, Loan, Auth
+  User, Author, Address, Provider, Publisher, Category, Book, Loan, Auth, Search
 } = require('./controllers')
 
 const { authUser, authAdmin } = require('./middlewares')
@@ -12,10 +12,12 @@ routes.get('/login', Auth.singin)
 routes.get('/me', authUser, (req, res) => {
   res.json(req.auth)
 })
+// Query params title (requerido) e categories.
+routes.get('/search/books', Search.findBooks)   // ALL
 
 routes.get('/users', authAdmin, User.index)          // ADM
 routes.get('/users/:id', authAdmin, User.show)       // ADM
-routes.post('/users', User.store)                    // All
+routes.post('/users', User.store)                    // ALL
 routes.put('/users/:id', authAdmin, User.edit)       // ADM
 routes.delete('/users/:id', authAdmin, User.destroy) // ADM
 
