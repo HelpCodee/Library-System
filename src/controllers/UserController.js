@@ -1,9 +1,13 @@
 const User = require('../models/User')
+const crypto = require('crypto')
+const jwt = require('../config/jwt')
 
 module.exports = {
   async index(req, res) {
     try {
-      const users = await User.findAll()
+      const users = await User.findAll({
+        attributes: ['id', 'name', 'surname', 'email', 'createdAt', 'updatedAt']
+      })
 
       return res.json(users)
     } catch (error) {
@@ -17,7 +21,10 @@ module.exports = {
     try {
       const { id } = req.params
 
-      const user = await User.findByPk(id)
+      const user = await User.findByPk(id, {
+        attributes: [ 'id', 'name', 'surname', 'email',
+          'telephone', 'cpf', 'is_admin', 'createdAt', 'updatedAt' ]
+      })
       if (!user) {
         return res.json({ error: 'Usuário não encontrado.' })
       }
@@ -36,6 +43,13 @@ module.exports = {
         name, surname, email, password, telephone, cpf
       } = req.body
 
+      const hash = (value) => {
+        return crypto
+                .createHash('md5')
+                .update(value)
+                .digest('hex')
+      }
+
       let user = await User.findOne({
         where: { email }
       })
@@ -44,10 +58,14 @@ module.exports = {
       }
 
       user = await User.create({
-        name, surname, email, password, telephone, cpf
+        name, surname, email, password: hash(password), telephone, cpf
       })
+      
+      let { password: pass, ...result } = user.dataValues
 
-      return res.json(user)
+      const token = jwt.sign({ userId: user.id, name: user.name })
+
+      return res.json({ user: result, token })
     } catch (error) {
       return res.json({ 
         error: error.message
