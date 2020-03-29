@@ -6,7 +6,8 @@ const Publisher = require('./PublisherController')
 const Category = require('./CategoryController')
 const Book = require('./BookController')
 const Loan = require('./LoanController')
+const Auth = require('./AuthController')
 
 module.exports = {
-  User, Address, Author, Provider, Publisher, Category, Book, Loan
+  User, Address, Author, Provider, Publisher, Category, Book, Loan, Auth
 }
