@@ -11,6 +11,7 @@ module.exports = {
           password: "1234",
           telephone: "321654",
           cpf: "654987321",
+          is_admin: true,
           created_at: new Date(),
           updated_at: new Date(),
         },
