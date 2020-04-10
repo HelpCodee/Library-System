@@ -19,7 +19,8 @@ const { authUser, authAdmin } = require("./middlewares");
 
 routes.get("/login", Auth.singin);
 
-routes.get("/forgetPassword", Forget.store);
+routes.get("/forgetPassword/:email", Forget.show);
+routes.put("/forgetPassword/change/:token", Forget.update);
 
 routes.get("/me", authUser, (req, res) => {
   res.json(req.auth);

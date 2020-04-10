@@ -1,5 +1,5 @@
 module.exports = {
-  dialect: 'postgres',
+  dialect: "postgres",
   host: process.env.DB_HOST,
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
@@ -8,4 +8,4 @@ module.exports = {
     timestamps: true,
     underscored: true,
   },
-}
+};
